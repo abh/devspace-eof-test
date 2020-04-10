@@ -1,0 +1,26 @@
+version: v1beta9
+images:
+  alpine-test:
+    image: harbor.ntppool.org/library/devspace-test
+    #injectRestartHelper: true
+    build:
+      kaniko:
+        snapshotMode: full
+        image: gcr.io/kaniko-project/executor:v0.19.0
+
+deployments:
+  - name: test
+    kubectl:
+      manifests:
+        - manifest.yaml
+
+dev:
+  sync:
+    - labelSelector:
+        app: test
+      waitInitialSync: true
+      localSubPath: ./
+      containerPath: /app
+      downloadExcludePaths:
+        - "*"
+      disableDownload: true

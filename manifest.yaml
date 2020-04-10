@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: test
+  name: alpine-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+        - image: harbor.ntppool.org/library/devspace-test
+          imagePullPolicy: IfNotPresent
+          name: alpine
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+          stdin: true
+          tty: true
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
