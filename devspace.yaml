@@ -8,6 +8,10 @@ images:
         snapshotMode: full
         image: gcr.io/kaniko-project/executor:v0.19.0
 
+commands:
+- name: testfiles
+  command: "dd if=/dev/random of=test.bin bs=1m count=10"
+
 deployments:
   - name: test
     kubectl:
